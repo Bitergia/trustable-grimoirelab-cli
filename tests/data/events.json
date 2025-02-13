@@ -1,0 +1,1309 @@
+[
+  {
+    "specversion": "1.0",
+    "id": "46e5466260bbc06d42c88ed0b9c1b1a753b5cef2",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1704795339.0,
+    "data": {
+      "commit": "c82f679dea593bfb069b2ad83726bb90d99bee13",
+      "parents": [],
+      "refs": [],
+      "Author": "UserTwo <usertwo@example2.com>",
+      "AuthorDate": "Tue Jan 9 11:15:39 2024 +0100",
+      "Commit": "UserTwo <usertwo@example2.com>",
+      "CommitDate": "Tue Jan 9 11:15:39 2024 +0100",
+      "message": "Add GPL3 license\n\nAdd the license file to the code as initial import.\n\nSigned-off-by: UserTwo <usertwo@example2.com>",
+      "Signed-off-by": [
+        "UserTwo <usertwo@example2.com>"
+      ],
+      "files": [
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "9cecc1d"
+          ],
+          "action": "A",
+          "file": "LICENSE",
+          "added": "674",
+          "removed": "0"
+        }
+      ]
+    }
+  },
+  {
+    "specversion": "1.0",
+    "id": "d815199798dc3e90a2110432f8e0b793d49c361c",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1709882882.0,
+    "data": {
+      "commit": "455fcf65d1698bc06b7b81e59c8f1e8411b3a2b2",
+      "parents": [
+        "43910889662fc75937a0f99d46afb48c32225cec"
+      ],
+      "refs": [],
+      "Author": "User One <userone@example.com>",
+      "AuthorDate": "Thu Feb 22 18:11:47 2024 +0100",
+      "Commit": "User One <userone@example.com>",
+      "CommitDate": "Fri Mar 8 08:28:02 2024 +0100",
+      "message": "[tests] Include tests for the scheduler\n\nThis commit includes the tests for the scheduler.\nThey test the jobs, the models and the scheduler itself.\n\nSigned-off-by: User One <userone@example.com>",
+      "Signed-off-by": [
+        "User One <userone@example.com>"
+      ],
+      "files": [
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "tests/__init__.py",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "tests/scheduler/__init__.py",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "3208ccd"
+          ],
+          "action": "A",
+          "file": "tests/scheduler/base.py",
+          "added": "46",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "ffb3725"
+          ],
+          "action": "A",
+          "file": "tests/scheduler/data/git_log.txt",
+          "added": "108",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "tests/scheduler/data/git_log_empty.txt",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "fb3a10f"
+          ],
+          "action": "A",
+          "file": "tests/scheduler/test_jobs.py",
+          "added": "311",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "2db910b"
+          ],
+          "action": "A",
+          "file": "tests/scheduler/test_models.py",
+          "added": "109",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "a2faa49"
+          ],
+          "action": "A",
+          "file": "tests/scheduler/test_scheduler.py",
+          "added": "101",
+          "removed": "0"
+        }
+      ]
+    }
+  },
+  {
+    "specversion": "1.0",
+    "id": "0b55e518606604053e91e0d37f60942b302be9bd",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1709882902.0,
+    "data": {
+      "commit": "8f7e293b1d8ba838ff8eaf30d99683d89a4341e7",
+      "parents": [
+        "455fcf65d1698bc06b7b81e59c8f1e8411b3a2b2"
+      ],
+      "refs": [],
+      "Author": "User One <userone@example.com>",
+      "AuthorDate": "Thu Feb 22 18:17:54 2024 +0100",
+      "Commit": "User One <userone@example.com>",
+      "CommitDate": "Fri Mar 8 08:28:22 2024 +0100",
+      "message": "Commands for running grimoirelab-core\n\nThis commit includes the code to run the workers,\nto insert tasks to the database, and a test consumer\nthat obtains the items from Redis.\n\nSigned-off-by: User One <userone@example.com>",
+      "Signed-off-by": [
+        "User One <userone@example.com>"
+      ],
+      "files": [
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "ed25a38"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/runner/__init__.py",
+          "added": "42",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/runner/commands/__init__.py",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "5cc14da"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/runner/commands/config.py",
+          "added": "116",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "590b801"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/runner/commands/fetch.py",
+          "added": "83",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "41c3a58"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/runner/commands/queues.py",
+          "added": "83",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "0cebf0b"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/runner/commands/run.py",
+          "added": "96",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "103127c"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/runner/utils.py",
+          "added": "34",
+          "removed": "0"
+        }
+      ]
+    }
+  },
+  {
+    "specversion": "1.0",
+    "id": "c3814a444abace94d661b4035587ab85f8fb8ac4",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1709882877.0,
+    "data": {
+      "commit": "43910889662fc75937a0f99d46afb48c32225cec",
+      "parents": [
+        "d9d780f0a402c573ff4cd64ac072281e0d355818"
+      ],
+      "refs": [],
+      "Author": "User One <userone@example.com>",
+      "AuthorDate": "Thu Feb 22 18:10:21 2024 +0100",
+      "Commit": "User One <userone@example.com>",
+      "CommitDate": "Fri Mar 8 08:27:57 2024 +0100",
+      "message": "Scheduler to fetch data from software repositories\n\nThis code includes a scheduler that is a job queue that schedules\nand executes Perceval.\nThe platform has one or more workers that will run each Perceval job.\n\nSigned-off-by: User One <userone@example.com>",
+      "Signed-off-by": [
+        "User One <userone@example.com>"
+      ],
+      "files": [
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "e69de29",
+            "0e27e64"
+          ],
+          "action": "M",
+          "file": "README.md",
+          "added": "131",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "d4b7b6a"
+          ],
+          "action": "A",
+          "file": "config/settings/testing.py",
+          "added": "56",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "6d0bb62"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/app/asgi.py",
+          "added": "9",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "f08b7e3"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/app/urls.py",
+          "added": "10",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "0364284"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/app/wsgi.py",
+          "added": "10",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "a7d14b8"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/config/settings.py",
+          "added": "230",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "42174a7"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/apps.py",
+          "added": "30",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "bde904e"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/common.py",
+          "added": "40",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "124bc67"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/errors.py",
+          "added": "83",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "7aec6d5"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/jobs.py",
+          "added": "260",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "b6cda9e"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/migrations/0001_initial.py",
+          "added": "51",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "7071bbe"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/models.py",
+          "added": "121",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "4143e7a"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/scheduler.py",
+          "added": "229",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "f378f7e"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/urls.py",
+          "added": "9",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "020c5ca"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/views.py",
+          "added": "96",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "e69de29",
+            "e69de29"
+          ],
+          "action": "R100",
+          "file": "src/grimoirelab/grimoirelab/__init__.py",
+          "newfile": "src/grimoirelab/core/scheduler/migrations/__init__.py",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "100644",
+            "000000"
+          ],
+          "indexes": [
+            "6b2ab35",
+            "0000000"
+          ],
+          "action": "D",
+          "file": "src/grimoirelab/grimoirelab/asgi.py",
+          "added": "0",
+          "removed": "16"
+        },
+        {
+          "modes": [
+            "100644",
+            "000000"
+          ],
+          "indexes": [
+            "9cef41c",
+            "0000000"
+          ],
+          "action": "D",
+          "file": "src/grimoirelab/grimoirelab/settings.py",
+          "added": "0",
+          "removed": "125"
+        },
+        {
+          "modes": [
+            "100644",
+            "000000"
+          ],
+          "indexes": [
+            "ee70272",
+            "0000000"
+          ],
+          "action": "D",
+          "file": "src/grimoirelab/grimoirelab/urls.py",
+          "added": "0",
+          "removed": "21"
+        },
+        {
+          "modes": [
+            "100644",
+            "000000"
+          ],
+          "indexes": [
+            "cdfedcc",
+            "0000000"
+          ],
+          "action": "D",
+          "file": "src/grimoirelab/grimoirelab/wsgi.py",
+          "added": "0",
+          "removed": "16"
+        },
+        {
+          "modes": [
+            "100755",
+            "100755"
+          ],
+          "indexes": [
+            "f67f12f",
+            "f79b226"
+          ],
+          "action": "R096",
+          "file": "src/grimoirelab/manage.py",
+          "newfile": "manage.py",
+          "added": "1",
+          "removed": "1"
+        }
+      ]
+    }
+  },
+  {
+    "specversion": "1.0",
+    "id": "d23b62cce75464c6ee861664bf6ef6a9a47e3250",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1709882905.0,
+    "data": {
+      "commit": "653abb751cce95bd0fcc04d803e47e8dbb997b36",
+      "parents": [
+        "8f7e293b1d8ba838ff8eaf30d99683d89a4341e7"
+      ],
+      "refs": [],
+      "Author": "User One <userone@example.com>",
+      "AuthorDate": "Thu Feb 22 18:19:32 2024 +0100",
+      "Commit": "User One <userone@example.com>",
+      "CommitDate": "Fri Mar 8 08:28:25 2024 +0100",
+      "message": "Docker image for running grimoirelab-core\n\nThis commit includes a Dockerfile for grimoirelab-core\nthat includes the scheduler and its commands, allowing\nto execute them in an isolated environment.\nIt includes the GitHub workflow for building and pushing\na docker image to DockerHub\n\nSigned-off-by: User One <userone@example.com>",
+      "Signed-off-by": [
+        "User One <userone@example.com>"
+      ],
+      "files": [
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "8a8ec81"
+          ],
+          "action": "A",
+          "file": ".github/workflows/docker-image.yml",
+          "added": "80",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "23fb306"
+          ],
+          "action": "A",
+          "file": "docker/Dockerfile",
+          "added": "77",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "06ee9fa"
+          ],
+          "action": "A",
+          "file": "docker/README.md",
+          "added": "85",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100755"
+          ],
+          "indexes": [
+            "0000000",
+            "3516f57"
+          ],
+          "action": "A",
+          "file": "docker/entrypoint.sh",
+          "added": "37",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "d095c55"
+          ],
+          "action": "A",
+          "file": "docker/grimoirelab.env",
+          "added": "16",
+          "removed": "0"
+        }
+      ]
+    }
+  },
+  {
+    "specversion": "1.0",
+    "id": "75c3b115ed2e691662bace46a3d8e437db388d52",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1711021314.0,
+    "data": {
+      "commit": "b02fa121dc51eb3ca13deb1dba605d4f51226f2e",
+      "parents": [
+        "653abb751cce95bd0fcc04d803e47e8dbb997b36"
+      ],
+      "refs": [],
+      "Author": "User One <userone@example.com>",
+      "AuthorDate": "Thu Mar 21 12:41:54 2024 +0100",
+      "Commit": "User One <userone@example.com>",
+      "CommitDate": "Thu Mar 21 12:41:54 2024 +0100",
+      "message": "Include new commands for workerpool and webserver\n\nThis commit includes two new grimoirelab commands to run\nthe webserver using UWSGI (`grimoirelab run server (--dev)`),\nand a command to run a pool of workers using a single command\n(`grimoirelab run workerpool (--num-workers 20)`)\n\nSigned-off-by: User One <userone@example.com>",
+      "Signed-off-by": [
+        "User One <userone@example.com>"
+      ],
+      "files": [
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "06ee9fa",
+            "f20580a"
+          ],
+          "action": "M",
+          "file": "docker/README.md",
+          "added": "18",
+          "removed": "3"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "e056c68",
+            "a2521cc"
+          ],
+          "action": "M",
+          "file": "poetry.lock",
+          "added": "45",
+          "removed": "35"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "76e6468",
+            "3fd5f9c"
+          ],
+          "action": "M",
+          "file": "pyproject.toml",
+          "added": "2",
+          "removed": "2"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "a7d14b8",
+            "1694f7a"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/config/settings.py",
+          "added": "9",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "0cebf0b",
+            "205624e"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/runner/commands/run.py",
+          "added": "110",
+          "removed": "5"
+        }
+      ]
+    }
+  },
+  {
+    "specversion": "1.0",
+    "id": "2ff38614a4908d3dd1f4bce845db62aba1e93d17",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1712328324.0,
+    "data": {
+      "commit": "fd7d80fc8d33a97013119fe52170467c20ee8b37",
+      "parents": [
+        "b02fa121dc51eb3ca13deb1dba605d4f51226f2e"
+      ],
+      "refs": [],
+      "Author": "User One <userone@example.com>",
+      "AuthorDate": "Thu Apr 4 08:22:31 2024 +0200",
+      "Commit": "User One <userone@example.com>",
+      "CommitDate": "Fri Apr 5 16:45:24 2024 +0200",
+      "message": "[scheduler] Create a new RQJob class for Perceval\n\nCreate a new Job class for running Perceval Jobs. It overwrites\nsome of the methods to include logging, success callbacks and failure\ncallbacks.\n\nIt also implements a recovery method for Git backend.\n\nSigned-off-by: User One <userone@example.com>",
+      "Signed-off-by": [
+        "User One <userone@example.com>"
+      ],
+      "files": [
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "1694f7a",
+            "b3ab02e"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/config/settings.py",
+          "added": "4",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/backends/__init__.py",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "c93d7ac"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/backends/backend.py",
+          "added": "59",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "159e99f"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/scheduler/backends/git.py",
+          "added": "59",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "bde904e",
+            "5c32421"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/scheduler/common.py",
+          "added": "1",
+          "removed": "1"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "7aec6d5",
+            "a7e8f8b"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/scheduler/jobs.py",
+          "added": "217",
+          "removed": "109"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "b6cda9e",
+            "b241a63"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/scheduler/migrations/0001_initial.py",
+          "added": "67",
+          "removed": "25"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "7071bbe",
+            "ac0639f"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/scheduler/models.py",
+          "added": "1",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "4143e7a",
+            "13b5b39"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/scheduler/scheduler.py",
+          "added": "16",
+          "removed": "184"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "020c5ca",
+            "7d2bf9a"
+          ],
+          "action": "M",
+          "file": "src/grimoirelab/core/scheduler/views.py",
+          "added": "1",
+          "removed": "2"
+        }
+      ]
+    }
+  },
+  {
+    "specversion": "1.0",
+    "id": "cddeaf021aecfef6f47d82d7f1e46ec2e3c713b9",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1704798924.0,
+    "data": {
+      "commit": "f48a7614db0bf12571f6d5e7eccf3afe81e452cc",
+      "parents": [
+        "c82f679dea593bfb069b2ad83726bb90d99bee13"
+      ],
+      "refs": [
+        "refs/heads/initial-import"
+      ],
+      "Author": "UserTwo <usertwo@example2.com>",
+      "AuthorDate": "Tue Jan 9 11:11:18 2024 +0000",
+      "Commit": "UserTwo <usertwo@example2.com>",
+      "CommitDate": "Tue Jan 9 11:15:24 2024 +0000",
+      "message": "Add initial configuration\n\nThis commit adds the initial files needed to configure\nthe project.\n\nCo-authored-by: User One <userone@example.com>",
+      "files": [
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "2ec584a"
+          ],
+          "action": "A",
+          "file": ".gitignore",
+          "added": "35",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "b5222c8"
+          ],
+          "action": "A",
+          "file": "AUTHORS",
+          "added": "2",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "README.md",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "fc87eda"
+          ],
+          "action": "A",
+          "file": "poetry.lock",
+          "added": "81",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "8a44fde"
+          ],
+          "action": "A",
+          "file": "pyproject.toml",
+          "added": "45",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/grimoirelab/__init__.py",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "6b2ab35"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/grimoirelab/asgi.py",
+          "added": "16",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "9cef41c"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/grimoirelab/settings.py",
+          "added": "125",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "ee70272"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/grimoirelab/urls.py",
+          "added": "21",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "cdfedcc"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/grimoirelab/wsgi.py",
+          "added": "16",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100755"
+          ],
+          "indexes": [
+            "0000000",
+            "f67f12f"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/manage.py",
+          "added": "22",
+          "removed": "0"
+        }
+      ]
+    }
+  },
+  {
+    "specversion": "1.0",
+    "id": "46095e4e8986312857423c809dcc9df61d9d370e",
+    "source": "https://github.com/chaoss/grimoirelab-core",
+    "type": "org.grimoirelab.events.git.commit",
+    "time": 1709882593.0,
+    "data": {
+      "commit": "d9d780f0a402c573ff4cd64ac072281e0d355818",
+      "parents": [
+        "c2ecce0815cae0f293201541bbd557b1549774e7"
+      ],
+      "refs": [],
+      "Author": "User One <userone@example.com>",
+      "AuthorDate": "Thu Feb 22 18:01:08 2024 +0100",
+      "Commit": "User One <userone@example.com>",
+      "CommitDate": "Fri Mar 8 08:23:13 2024 +0100",
+      "message": "[CI] GitHub's workflows for grimoirelab-core\n\nThis commit includes the workflows necessary for executing the\ntests, checking if the changelog is included, and creating a new\nrelease.\n\nSigned-off-by: User One <userone@example.com>",
+      "Signed-off-by": [
+        "User One <userone@example.com>"
+      ],
+      "files": [
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "ec20d0a"
+          ],
+          "action": "A",
+          "file": ".flake8",
+          "added": "4",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "5572b92"
+          ],
+          "action": "A",
+          "file": ".github/workflows/changelog.yml",
+          "added": "12",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "720405a"
+          ],
+          "action": "A",
+          "file": ".github/workflows/release.yml",
+          "added": "91",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "fde1691"
+          ],
+          "action": "A",
+          "file": ".github/workflows/tests.yml",
+          "added": "58",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "NEWS",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "fc87eda",
+            "e056c68"
+          ],
+          "action": "M",
+          "file": "poetry.lock",
+          "added": "734",
+          "removed": "14"
+        },
+        {
+          "modes": [
+            "100644",
+            "100644"
+          ],
+          "indexes": [
+            "8a44fde",
+            "76e6468"
+          ],
+          "action": "M",
+          "file": "pyproject.toml",
+          "added": "14",
+          "removed": "3"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "cdfba50"
+          ],
+          "action": "A",
+          "file": "requirements_dev.txt",
+          "added": "2",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "e69de29"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/__init__.py",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "f102a9c"
+          ],
+          "action": "A",
+          "file": "src/grimoirelab/core/_version.py",
+          "added": "1",
+          "removed": "0"
+        }
+      ]
+    }
+  }
+]

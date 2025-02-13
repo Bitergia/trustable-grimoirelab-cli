@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "trustable-cli"
+version = "0.0.0"
+description = ""
+authors = [
+    "Bitergia Developers"
+]
+license = "GPL-3.0+"
+readme = "README.md"
+packages = [{include = "trustable_cli"}]
+
+[tool.poetry.scripts]
+trustable = "trustable_cli.cli:trustable_grimoirelab_score"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+spdx-tools = "^0.8.3"
+click = "^8.1.8"
+requests = "^2.32.3"
+opensearch-py = "^2.8.0"
+grimoirelab-core = {git = "https://github.com/chaoss/grimoirelab-core.git", allow-prereleases = true}
+
+
+[tool.poetry.group.dev.dependencies]
+httpretty = "^1.1.4"
+flake8 = "^7.1.1"
+pre-commit = "^4.1.0"
+black = "^24.10.0"
+testcontainers = {extras = ["opensearch", "redis", "generic", "mysql"], version = "^4.9.1"}
+
+[tool.black]
+line-length = 130
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

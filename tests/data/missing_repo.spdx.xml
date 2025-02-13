@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document>
+	<SPDXID>SPDXRef-DOCUMENT</SPDXID>
+	<creationInfo>
+		<created>2025-02-13T00:00:01Z</created>
+		<creators>Organization: Bitergia (bitergia@bitergia.com)</creators>
+	</creationInfo>
+	<dataLicense>CC0-1.0</dataLicense>
+	<name>Tests</name>
+	<spdxVersion>SPDX-2.3</spdxVersion>
+	<documentNamespace>https://bitergia.com/tests</documentNamespace>
+	<packages>
+		<SPDXID>SPDXRef-bootstrap-gnu-config.bst-0</SPDXID>
+		<comment>Product: gnu-config</comment>
+		<downloadLocation>NONE</downloadLocation>
+		<filesAnalyzed>false</filesAnalyzed>
+		<name>bootstrap/gnu-config.bst</name>
+		<sourceInfo>git</sourceInfo>
+	</packages>
+	<packages>
+		<SPDXID>SPDXRef-public-linux-headers.bst-6.10.2</SPDXID>
+		<comment>Product: linux-headers</comment>
+		<downloadLocation>https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git</downloadLocation>
+		<filesAnalyzed>false</filesAnalyzed>
+		<name>public/linux-headers.bst</name>
+		<sourceInfo>git</sourceInfo>
+		<versionInfo>6.10.2</versionInfo>
+	</packages>
+	<packages>
+		<SPDXID>SPDXRef-bootstrap-glibc.bst-2.40</SPDXID>
+		<comment>Product: glibc</comment>
+		<downloadLocation>https://sourceware.org/git/glibc.git</downloadLocation>
+		<filesAnalyzed>false</filesAnalyzed>
+		<name>bootstrap/glibc.bst</name>
+		<sourceInfo>git</sourceInfo>
+		<versionInfo>2.40</versionInfo>
+	</packages>
+	<packages>
+		<SPDXID>SPDXRef-bootstrap-attr.bst-2.5.2</SPDXID>
+		<comment>Product: attr</comment>
+		<downloadLocation>https://git.savannah.gnu.org/git/attr.git</downloadLocation>
+		<filesAnalyzed>false</filesAnalyzed>
+		<name>bootstrap/attr.bst</name>
+		<sourceInfo>git</sourceInfo>
+		<versionInfo>2.5.2</versionInfo>
+	</packages>
+	<packages>
+		<SPDXID>SPDXRef-bootstrap-acl.bst-2.3.2</SPDXID>
+		<comment>Product: acl</comment>
+		<downloadLocation>https://git.savannah.gnu.org/git/acl.git</downloadLocation>
+		<filesAnalyzed>false</filesAnalyzed>
+		<name>bootstrap/acl.bst</name>
+		<sourceInfo>git</sourceInfo>
+		<versionInfo>2.3.2</versionInfo>
+	</packages>
+	<relationships>
+		<spdxElementId>SPDXRef-DOCUMENT</spdxElementId>
+		<relatedSpdxElement>SPDXRef-bootstrap-gnu-config.bst-0</relatedSpdxElement>
+		<relationshipType>DESCRIBES</relationshipType>
+	</relationships>
+	<relationships>
+		<spdxElementId>SPDXRef-DOCUMENT</spdxElementId>
+		<relatedSpdxElement>SPDXRef-public-linux-headers.bst-6.10.2</relatedSpdxElement>
+		<relationshipType>DESCRIBES</relationshipType>
+	</relationships>
+	<relationships>
+		<spdxElementId>SPDXRef-DOCUMENT</spdxElementId>
+		<relatedSpdxElement>SPDXRef-bootstrap-glibc.bst-2.40</relatedSpdxElement>
+		<relationshipType>DESCRIBES</relationshipType>
+	</relationships>
+	<relationships>
+		<spdxElementId>SPDXRef-DOCUMENT</spdxElementId>
+		<relatedSpdxElement>SPDXRef-bootstrap-attr.bst-2.5.2</relatedSpdxElement>
+		<relationshipType>DESCRIBES</relationshipType>
+	</relationships>
+	<relationships>
+		<spdxElementId>SPDXRef-DOCUMENT</spdxElementId>
+		<relatedSpdxElement>SPDXRef-bootstrap-acl.bst-2.3.2</relatedSpdxElement>
+		<relationshipType>DESCRIBES</relationshipType>
+	</relationships>
+</Document>

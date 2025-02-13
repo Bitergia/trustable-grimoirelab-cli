@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document>
+	<SPDXID>SPDXRef-DOCUMENT</SPDXID>
+	<creationInfo>
+		<created>2025-01-23T14:18:21Z</created>
+		<creators>Organization: Organization</creators>
+	</creationInfo>
+	<dataLicense>CC0-1.0</dataLicense>
+	<name>Trustable</name>
+	<spdxVersion>SPDX-2.3</spdxVersion>
+	<documentNamespace>https://example.com</documentNamespace>
+	<packages>
+		<SPDXID>SPDXRef-grimoirelab</SPDXID>
+		<comment>Product: grimoirelab</comment>
+		<downloadLocation>https://github.com/chaoss/grimoirelab-core.git</downloadLocation>
+		<filesAnalyzed>false</filesAnalyzed>
+		<name>grimoirelab</name>
+		<sourceInfo>git</sourceInfo>
+	</packages>
+	
+	<relationships>
+		<spdxElementId>SPDXRef-DOCUMENT</spdxElementId>
+		<relatedSpdxElement>SPDXRef-grimoirelab</relatedSpdxElement>
+		<relationshipType>DESCRIBES</relationshipType>
+	</relationships>
+</Document>
