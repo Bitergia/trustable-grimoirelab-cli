@@ -43,7 +43,8 @@ GIT_REPO_REGEX = r"((git|http(s)?)|(git@[\w\.]+))://?([\w\.@\:/\-~]+)(\.git)(/)?
 @click.option(
     "--from-date",
     type=click.DateTime(formats=["%Y-%m-%d"]),
-    help="Start date",
+    help="Start date, by default last year",
+    default=(datetime.datetime.today() - datetime.timedelta(days=365)).strftime("%Y-%m-%d"),
 )
 @click.option(
     "--to-date",
