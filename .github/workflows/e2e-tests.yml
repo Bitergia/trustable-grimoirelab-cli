@@ -1,14 +1,6 @@
-name: tests
+name: End to end tests
 
-on:
-  push:
-    branches:
-      - '**'
-    tags:
-      - '!**'
-  pull_request:
-    branches:
-      - '**'
+on: workflow_dispatch
 
 jobs:
 
@@ -42,4 +34,4 @@ jobs:
         poetry run black --check .
     - name: Tests
       run: |
-        cd tests && poetry run python run_tests.py
+        cd tests && poetry run python run_tests.py end_to_end

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document>
+	<SPDXID>SPDXRef-DOCUMENT</SPDXID>
+	<creationInfo>
+		<created>2025-02-13T00:00:01Z</created>
+		<creators>Organization: Bitergia (bitergia@bitergia.com)</creators>
+	</creationInfo>
+	<dataLicense>CC0-1.0</dataLicense>
+	<name>Tests</name>
+	<spdxVersion>SPDX-2.3</spdxVersion>
+	<documentNamespace>https://bitergia.com/tests</documentNamespace>
+	<packages>
+		<SPDXID>SPDXRef-angular</SPDXID>
+		<downloadLocation>https://github.com/angular/quickstart.git</downloadLocation>
+		<filesAnalyzed>false</filesAnalyzed>
+		<name>angular</name>
+		<sourceInfo>git</sourceInfo>
+	</packages>
+  <packages>
+		<SPDXID>SPDXRef-sql-dk</SPDXID>
+		<downloadLocation>hg+https://hg.frantovo.cz/sql-dk</downloadLocation>
+		<filesAnalyzed>false</filesAnalyzed>
+		<name>sql-dk</name>
+		<sourceInfo>git</sourceInfo>
+	</packages>
+	
+	
+	<relationships>
+		<spdxElementId>SPDXRef-DOCUMENT</spdxElementId>
+		<relatedSpdxElement>SPDXRef-angular</relatedSpdxElement>
+		<relationshipType>DESCRIBES</relationshipType>
+	</relationships>
+  <relationships>
+		<spdxElementId>SPDXRef-DOCUMENT</spdxElementId>
+		<relatedSpdxElement>SPDXRef-sql-dk</relatedSpdxElement>
+		<relationshipType>DESCRIBES</relationshipType>
+	</relationships>
+</Document>
