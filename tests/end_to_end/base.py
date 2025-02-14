@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-import json
+import logging
 import os
 import signal
 import subprocess
@@ -36,21 +36,31 @@ from trustable_cli.cli import trustable_grimoirelab_score
 GRIMOIRELAB_URL = "http://localhost:8000"
 
 
-class EndToEndTests(unittest.TestCase):
+class EndToEndTestCase(unittest.TestCase):
+    """Base class to build end to end tests.
+
+    This class contains all necessary to build end to end test
+    cases for Trustable. It provides an OpenSearch server and a
+    GrimoireLab 2.x server and workers, along with its required
+    MariaDB and Redis databases.
+    """
+
     @classmethod
     def setUpClass(cls):
+        logging.getLogger().handlers = []
         cls.temp_file = tempfile.NamedTemporaryFile(delete=False)
         cls.runner = CliRunner()
         cls._start_redis_container(cls)
         cls._start_database_container(cls)
         cls._start_opensearch_container(cls)
         cls._start_grimoirelab(cls)
+        cls._preload_repositories(cls)
 
     @classmethod
     def tearDownClass(cls):
         cls.grimoirelab_eventizers.terminate()
         cls.grimoirelab_archivists.terminate()
-        time.sleep(60)
+        time.sleep(20)
         cls.grimoirelab_server.send_signal(signal.SIGINT)
         cls.mysql_container.stop()
         cls.opensearch_container.stop()
@@ -87,20 +97,18 @@ class EndToEndTests(unittest.TestCase):
         subprocess.run(["grimoirelab", "admin", "create-user", "--username", "admin", "--no-interactive"])
         self.grimoirelab_server = subprocess.Popen(["grimoirelab", "run", "server", "--dev"], start_new_session=True)
         self.grimoirelab_eventizers = subprocess.Popen(
-            ["grimoirelab", "run", "eventizers", "--workers", "1"], start_new_session=True
+            ["grimoirelab", "run", "eventizers", "--workers", "10"], start_new_session=True
         )
         self.grimoirelab_archivists = subprocess.Popen(
-            ["grimoirelab", "run", "archivists", "--workers", "1"], start_new_session=True
+            ["grimoirelab", "run", "archivists", "--workers", "10"], start_new_session=True
         )
-        time.sleep(30)
+        time.sleep(10)
 
-    def test_commit_count(self):
-        """Check if it returns the number of commits of one repository from a valid file"""
-
-        result = self.runner.invoke(
+    def _preload_repositories(self):
+        self.runner.invoke(
             trustable_grimoirelab_score,
             [
-                "./data/one_repo.spdx.xml",
+                "./data/archived_repos.spdx.xml",
                 "--grimoirelab-url",
                 GRIMOIRELAB_URL,
                 "--grimoirelab-user",
@@ -113,15 +121,7 @@ class EndToEndTests(unittest.TestCase):
                 "events",
                 "--output",
                 self.temp_file.name,
+                "--from-date=2000-01-01",
             ],
         )
-        self.assertEqual(result.exit_code, 0)
-
-        with open(self.temp_file.name) as f:
-            metrics = json.load(f)
-            self.assertEqual(len(metrics["repositories"]), 1)
-            self.assertGreater(metrics["repositories"]["https://github.com/chaoss/grimoirelab-core"]["metrics"]["num_commits"], 0)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        time.sleep(20)
