@@ -20,13 +20,19 @@
 import os
 import sys
 import unittest
+import click
 
 
-if __name__ == "__main__":
-
+@click.command()
+@click.argument("module", required=False, default="unit")
+def test(module):
     test_suite = unittest.TestLoader().discover(
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "."),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), module),
         pattern="test_*.py",
     )
     result = unittest.TextTestRunner(buffer=True).run(test_suite)
     sys.exit(not result.wasSuccessful())
+
+
+if __name__ == "__main__":
+    test()
