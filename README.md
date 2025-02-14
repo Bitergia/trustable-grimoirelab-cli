@@ -30,7 +30,7 @@ Once you have `poetry` running, move to the next section.
 
     ```bash
     poetry update
-    poetry install
+    poetry install --with dev
     ```
 
     This will install the tool inside of a virtual environment managed by
