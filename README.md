@@ -30,13 +30,15 @@ Once you have `poetry` running, move to the next section.
 
     ```bash
     poetry update
-    poetry install --with dev
+    poetry install
     ```
 
     This will install the tool inside of a virtual environment managed by
     poetry. To use the tool you will have to activate it first with the
     command `eval $(poetry env activate)` (poetry >= 2.x) or
     `poetry shell` (poetry < 2.x).
+
+    For development mode, install the tool with: `poetry install --with dev`
 
 ## Usage
 
@@ -49,6 +51,7 @@ it analyzed.
 ```bash
 trustable spdx.xml \
   --grimoirelab-url http://localhost:8000 \
+  --grimoirelab-user user --grimoirelab-password password \
   --opensearch-url https://admin:admin@127.0.0.1:9200 \
   --opensearch-index events \
   --output metrics.json
