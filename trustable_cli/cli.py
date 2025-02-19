@@ -173,7 +173,7 @@ def generate_metrics_when_ready(
     """
     logging.info("Generating metrics")
 
-    after_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=1)
+    after_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=7)
     pending_repositories = set(repositories)
     metrics = {"repositories": {}}
 
