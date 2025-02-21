@@ -21,7 +21,10 @@ from __future__ import annotations
 
 import datetime
 import logging
+import re
 import typing
+
+from collections import Counter
 
 import certifi
 
@@ -33,6 +36,181 @@ logging.getLogger("opensearch").setLevel(logging.WARNING)
 
 if typing.TYPE_CHECKING:
     from typing import Any
+
+
+COMMIT_EVENT_TYPE = "org.grimoirelab.events.git.commit"
+AUTHOR_FIELD = "Author"
+FILE_TYPE_CODE = (
+    r"\.bazel$|\.bazelrc$|\.bzl$|\.c$|\.cc$|\.cp$|\.cpp$|\.cxx$|\.c\+\+$|"
+    r"\.go$|\.h$|\.js$|\.mjs$|\.java$|\.py$|\.rs$|\.sh$|\.tf$|\.ts$"
+)
+
+
+class GitEventsAnalyzer:
+    def __init__(self):
+        self.total_commits: int = 0
+        self.contributors: Counter = Counter()
+        self.companies: Counter = Counter()
+        self.file_types: dict = Counter()
+        self.added_lines: int = 0
+        self.removed_lines: int = 0
+        self.messages_sizes: list = []
+
+    def process_events(self, events: iter(dict[str, Any])):
+        for event in events:
+            if event["type"] != COMMIT_EVENT_TYPE:
+                continue
+
+            event_data = event.get("data")
+
+            self.total_commits += 1
+            self.contributors[event_data[AUTHOR_FIELD]] += 1
+            self._update_companies(event_data)
+            self._update_file_metrics(event_data)
+            self._update_message_size_metrics(event_data)
+
+    def get_commit_count(self):
+        return self.total_commits
+
+    def get_contributor_count(self):
+        return len(self.contributors)
+
+    def get_pony_factor(self):
+        """Number of individuals producing up to 50% of the total number of code contributions"""
+
+        partial_contributions = 0
+        pony_factor = 0
+
+        if len(self.contributors) == 0:
+            return 0
+
+        for _, contributions in self.contributors.most_common():
+            partial_contributions += contributions
+            pony_factor += 1
+            if partial_contributions / self.total_commits > 0.5:
+                break
+
+        return pony_factor
+
+    def get_elephant_factor(self):
+        """Number of companies producing up to 50% of the total number of code contributions"""
+
+        partial_contributions = 0
+        elephant_factor = 0
+
+        if len(self.companies) == 0:
+            return 0
+
+        for _, contributions in self.companies.most_common():
+            partial_contributions += contributions
+            elephant_factor += 1
+            if partial_contributions / self.total_commits > 0.5:
+                break
+
+        return elephant_factor
+
+    def get_file_type_metrics(self):
+        """Get the file type metrics"""
+
+        return dict(self.file_types)
+
+    def get_commit_size_metrics(self):
+        """Get the commit size metrics"""
+
+        metrics = {
+            "added_lines": self.added_lines,
+            "removed_lines": self.removed_lines,
+        }
+        return metrics
+
+    def get_message_size_metrics(self):
+        """Get the message size metrics"""
+
+        total = sum(self.messages_sizes)
+        number = len(self.messages_sizes)
+        average = 0
+        median = 0
+        if number > 0:
+            average = total / number
+            median = sorted(self.messages_sizes)[number // 2]
+
+        metrics = {
+            "total": total,
+            "average": average,
+            "median": median,
+        }
+        return metrics
+
+    def get_average_commits_week(self, days_interval: int):
+        """
+        Get the average number of commits per week
+
+        :param days_interval: Interval of days to calculate the average
+        """
+        return self.total_commits / days_interval / 7
+
+    def get_developer_categories(self):
+        """Return the number of core, regular and casual developers"""
+
+        core = 0
+        regular = 0
+        casual = 0
+        regular_threshold = int(0.8 * self.total_commits)
+        casual_threshold = int(0.95 * self.total_commits)
+        acc_commits = 0
+
+        for _, contributions in self.contributors.most_common():
+            acc_commits += contributions
+
+            if acc_commits <= regular_threshold:
+                core += 1
+            elif acc_commits <= casual_threshold:
+                regular += 1
+            else:
+                casual += 1
+
+        return {
+            "core": core,
+            "regular": regular,
+            "casual": casual,
+        }
+
+    def _update_companies(self, event):
+        try:
+            author = event[AUTHOR_FIELD]
+            company = author.split("@")[1][:-1]
+            self.companies[company] += 1
+        except (IndexError, KeyError):
+            pass
+
+    def _update_file_metrics(self, event):
+        if "files" not in event:
+            return
+
+        for file in event["files"]:
+            if not file["file"]:
+                continue
+            # File type metrics
+            if re.search(FILE_TYPE_CODE, file["file"]):
+                self.file_types["Code"] += 1
+            else:
+                self.file_types["Other"] += 1
+
+            # Line added/removed metrics
+            if "added" in file:
+                try:
+                    self.added_lines += int(file["added"])
+                except ValueError:
+                    pass
+            if "removed" in file:
+                try:
+                    self.removed_lines += int(file["removed"])
+                except ValueError:
+                    pass
+
+    def _update_message_size_metrics(self, event):
+        message = event.get("message", "")
+        self.messages_sizes.append(len(message))
 
 
 def get_repository_metrics(
@@ -59,18 +237,25 @@ def get_repository_metrics(
 
     events = get_repository_events(os_conn, opensearch_index, repository, from_date, to_date)
 
-    metrics["metrics"]["num_commits"] = commit_count(events)
+    analyzer = GitEventsAnalyzer()
+    analyzer.process_events(events)
+
+    metrics["metrics"]["total_commits"] = analyzer.get_commit_count()
+    metrics["metrics"]["total_contributors"] = analyzer.get_contributor_count()
+    metrics["metrics"]["pony_factor"] = analyzer.get_pony_factor()
+    metrics["metrics"]["elephant_factor"] = analyzer.get_elephant_factor()
+    metrics["metrics"]["file_types"] = analyzer.get_file_type_metrics()
+    metrics["metrics"]["commit_size"] = analyzer.get_commit_size_metrics()
+    metrics["metrics"]["message_size"] = analyzer.get_message_size_metrics()
+    metrics["metrics"]["developer_categories"] = analyzer.get_developer_categories()
+
+    if from_date and to_date:
+        days = (to_date - from_date).days
+    else:
+        days = 365
+    metrics["metrics"]["average_commits_week"] = analyzer.get_average_commits_week(days)
 
     return metrics
-
-
-def commit_count(events: list[dict[str, Any]]) -> int:
-    """
-    Return the number of commits in the list of events.
-
-    :param events: List of events
-    """
-    return sum(1 for event in events if event["type"] == "org.grimoirelab.events.git.commit")
 
 
 def get_repository_events(
@@ -79,7 +264,7 @@ def get_repository_events(
     repository: str,
     from_date: datetime.datetime = None,
     to_date: datetime.datetime = None,
-) -> list[dict[str, Any]]:
+) -> iter(dict[str, Any]):
     """
     Returns the events between start_date and end_date for a repository.
 
@@ -89,20 +274,13 @@ def get_repository_events(
     :param from_date: Start date, by default None
     :param to_date: End date, by default None
     """
-    s = (
-        Search(using=connection, index=index_name)
-        .filter("match", source=repository)
-        .filter("term", type="org.grimoirelab.events.git.commit")
-        .source(["type"])
-    )
+    s = Search(using=connection, index=index_name).filter("match", source=repository).filter("term", type=COMMIT_EVENT_TYPE)
 
     date_range = _format_date(from_date, to_date)
     if date_range:
         s = s.filter("range", time=date_range)
 
-    events = s.scan()
-
-    return [event for event in events]
+    return s.scan()
 
 
 def connect_to_opensearch(

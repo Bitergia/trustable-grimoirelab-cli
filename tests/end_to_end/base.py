@@ -95,12 +95,23 @@ class EndToEndTestCase(unittest.TestCase):
 
         self.runner.invoke(grimoirelab, "admin setup")
         subprocess.run(["grimoirelab", "admin", "create-user", "--username", "admin", "--no-interactive"])
-        self.grimoirelab_server = subprocess.Popen(["grimoirelab", "run", "server", "--dev"], start_new_session=True)
+        self.grimoirelab_server = subprocess.Popen(
+            ["grimoirelab", "run", "server", "--dev"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
         self.grimoirelab_eventizers = subprocess.Popen(
-            ["grimoirelab", "run", "eventizers", "--workers", "10"], start_new_session=True
+            ["grimoirelab", "run", "eventizers", "--workers", "10"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
         )
         self.grimoirelab_archivists = subprocess.Popen(
-            ["grimoirelab", "run", "archivists", "--workers", "10"], start_new_session=True
+            ["grimoirelab", "run", "archivists", "--workers", "10"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
         )
         time.sleep(10)
 

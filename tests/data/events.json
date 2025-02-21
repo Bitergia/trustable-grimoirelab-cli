@@ -187,7 +187,6 @@
       "AuthorDate": "Thu Feb 22 18:17:54 2024 +0100",
       "Commit": "User One <userone@example.com>",
       "CommitDate": "Fri Mar 8 08:28:22 2024 +0100",
-      "message": "Commands for running grimoirelab-core\n\nThis commit includes the code to run the workers,\nto insert tasks to the database, and a test consumer\nthat obtains the items from Redis.\n\nSigned-off-by: User One <userone@example.com>",
       "Signed-off-by": [
         "User One <userone@example.com>"
       ],
@@ -305,13 +304,13 @@
         "d9d780f0a402c573ff4cd64ac072281e0d355818"
       ],
       "refs": [],
-      "Author": "User One <userone@example.com>",
+      "Author": "User Three <userthree@example.com>",
       "AuthorDate": "Thu Feb 22 18:10:21 2024 +0100",
-      "Commit": "User One <userone@example.com>",
+      "Commit": "User Three <userthree@example.com>",
       "CommitDate": "Fri Mar 8 08:27:57 2024 +0100",
       "message": "Scheduler to fetch data from software repositories\n\nThis code includes a scheduler that is a job queue that schedules\nand executes Perceval.\nThe platform has one or more workers that will run each Perceval job.\n\nSigned-off-by: User One <userone@example.com>",
       "Signed-off-by": [
-        "User One <userone@example.com>"
+        "User Three <userthree@example.com>"
       ],
       "files": [
         {
