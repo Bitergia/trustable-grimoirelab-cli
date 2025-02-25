@@ -103,8 +103,8 @@ class TestGitEventsAnalyzer(unittest.TestCase):
         self.analyzer.process_events(self.events)
 
         file_metrics = self.analyzer.get_file_type_metrics()
-        self.assertEqual(file_metrics.get("Code", 0), 54)
-        self.assertEqual(file_metrics.get("Other", 0), 24)
+        self.assertEqual(file_metrics.get("code", 0), 54)
+        self.assertEqual(file_metrics.get("other", 0), 24)
 
     def test_commit_size_metrics(self):
         """Test that commit size metrics are calculated correctly"""
@@ -124,14 +124,14 @@ class TestGitEventsAnalyzer(unittest.TestCase):
 
         metrics = self.analyzer.get_message_size_metrics()
         self.assertEqual(metrics["total"], 1891)
-        self.assertAlmostEqual(metrics["average"], 210.11, delta=0.1)
+        self.assertAlmostEqual(metrics["mean"], 210.11, delta=0.1)
         self.assertEqual(metrics["median"], 229)
 
-    def test_get_average_commits_week(self):
-        """Test whether the average commits per week is calculated correctly"""
+    def test_get_commits_week_mean(self):
+        """Test whether the average (mean) commits per week is calculated correctly"""
 
         self.analyzer.process_events(self.events)
-        avg = self.analyzer.get_average_commits_week(days_interval=30)
+        avg = self.analyzer.get_commits_week_mean(days_interval=30)
         self.assertAlmostEqual(avg, 9 / 30 / 7, delta=0.1)
 
     def test_get_developer_categories(self):
