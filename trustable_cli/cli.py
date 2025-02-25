@@ -86,21 +86,30 @@ def trustable_grimoirelab_score(
         grimoirelab_client = GrimoireLabClient(grimoirelab_url, grimoirelab_user, grimoirelab_password)
         grimoirelab_client.connect()
 
-        package_urls = get_sbom_repositories(filename)
+        packages = get_sbom_packages(filename)
+        git_urls = list(set(repo for repo in packages.values() if is_valid(repo)))
 
-        if len(package_urls) > 0:
-            logging.info(f"Found {len(package_urls)} git repositories")
+        if len(git_urls) > 0:
+            logging.info(f"Found {len(git_urls)} git repositories")
         else:
             logging.info("Could not find any git repositories to analyze")
             sys.exit(0)
 
-        schedule_repositories(package_urls, grimoirelab_client)
+        schedule_repositories(git_urls, grimoirelab_client)
 
         metrics = generate_metrics_when_ready(
-            grimoirelab_client, package_urls, opensearch_url, opensearch_index, from_date, to_date, verify_certs
+            grimoirelab_client, git_urls, opensearch_url, opensearch_index, from_date, to_date, verify_certs
         )
 
-        output.write(json.dumps(metrics, indent=4))
+        package_metrics = {"packages": {}}
+        for package, repo in packages.items():
+            if repo and repo in metrics["repositories"]:
+                package_metrics["packages"][package] = metrics["repositories"][repo]
+                package_metrics["packages"][package]["repository"] = repo
+            else:
+                package_metrics["packages"][package] = {"metrics": None}
+
+        output.write(json.dumps(package_metrics, indent=4))
     except SPDXParsingError as e:
         logging.error(e.messages[0])
         sys.exit(1)
@@ -117,23 +126,24 @@ def get_repository(download_location: str) -> str | None:
             return uri
 
 
-def get_sbom_repositories(file: str) -> list[str]:
-    """Extract git repositories from SPDX SBoM file.
+def get_sbom_packages(file: str) -> dict[str, str]:
+    """Extract packages and git repositories from SPDX SBoM file.
 
     :param file: SPDX SBoM file.
 
-    :return: List of git repositories.
+    :return: Dict with package and repositories.
     """
-    repositories = []
+    packages = {}
     document = parse_file(file)
     for package in document.packages:
         repository = get_repository(package.download_location)
         if repository:
-            repositories.append(repository)
+            packages[package.spdx_id] = repository
         else:
+            packages[package.spdx_id] = None
             logging.warning(f"Could not find a git repository for {package.name}")
 
-    return list(set(repositories))
+    return packages
 
 
 def schedule_repositories(repositories: list[str], grimoirelab_client: GrimoireLabClient) -> None:

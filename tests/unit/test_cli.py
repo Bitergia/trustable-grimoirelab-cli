@@ -118,11 +118,21 @@ class TestCli(unittest.TestCase):
         self.assertEqual(len(http_requests), 5)
         self.assertEqual(len(http_requests_repos), 5)
 
+        expected_packages = [
+            "SPDXRef-bootstrap-gnu-config.bst-0",
+            "SPDXRef-public-linux-headers.bst-6.10.2",
+            "SPDXRef-bootstrap-glibc.bst-2.40",
+            "SPDXRef-bootstrap-attr.bst-2.5.2",
+            "SPDXRef-bootstrap-acl.bst-2.3.2",
+        ]
         with open(self.temp_file.name) as f:
             metrics = json.load(f)
-            self.assertEqual(len(metrics["repositories"]), 5)
-            for repository, data in metrics["repositories"].items():
+            self.assertEqual(len(metrics["packages"]), 5)
+            i = 0
+            for package, data in metrics["packages"].items():
+                self.assertEqual(package, expected_packages[i])
                 self.assertEqual(data["metrics"]["num_commits"], 10)
+                i += 1
 
     @httpretty.activate
     @patch("trustable_cli.cli.get_repository_metrics")
