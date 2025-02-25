@@ -44,10 +44,11 @@ class TestMetrics(EndToEndTestCase):
             # Check metrics
             with open(self.temp_file.name) as f:
                 metrics = json.load(f)
-                self.assertEqual(len(metrics["repositories"]), 2)
+                self.assertEqual(len(metrics["packages"]), 2)
 
-                self.assertIn("https://github.com/angular/quickstart", metrics["repositories"])
-                quickstart_metrics = metrics["repositories"]["https://github.com/angular/quickstart"]["metrics"]
+                self.assertIn("SPDXRef-angular", metrics["packages"])
+                self.assertEqual(metrics["packages"]["SPDXRef-angular"]["repository"], "https://github.com/angular/quickstart")
+                quickstart_metrics = metrics["packages"]["SPDXRef-angular"]["metrics"]
                 self.assertEqual(quickstart_metrics["total_commits"], 164)
                 self.assertEqual(quickstart_metrics["total_contributors"], 25)
                 self.assertEqual(quickstart_metrics["pony_factor"], 2)
@@ -64,8 +65,11 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories"]["casual"], 9)
                 self.assertAlmostEqual(quickstart_metrics["average_commits_week"], 0.06418, delta=0.1)
 
-                self.assertIn("https://github.com/angular/angular-seed", metrics["repositories"])
-                angular_metrics = metrics["repositories"]["https://github.com/angular/angular-seed"]["metrics"]
+                self.assertIn("SPDXRef-angular-seed", metrics["packages"])
+                self.assertEqual(
+                    metrics["packages"]["SPDXRef-angular-seed"]["repository"], "https://github.com/angular/angular-seed"
+                )
+                angular_metrics = metrics["packages"]["SPDXRef-angular-seed"]["metrics"]
                 self.assertEqual(angular_metrics["total_commits"], 207)
                 self.assertEqual(angular_metrics["total_contributors"], 58)
                 self.assertEqual(angular_metrics["pony_factor"], 5)
@@ -115,10 +119,11 @@ class TestMetrics(EndToEndTestCase):
             # Check metrics
             with open(self.temp_file.name) as f:
                 metrics = json.load(f)
-                self.assertEqual(len(metrics["repositories"]), 2)
+                self.assertEqual(len(metrics["packages"]), 2)
 
-                self.assertIn("https://github.com/angular/quickstart", metrics["repositories"])
-                quickstart_metrics = metrics["repositories"]["https://github.com/angular/quickstart"]["metrics"]
+                self.assertIn("SPDXRef-angular", metrics["packages"])
+                self.assertEqual(metrics["packages"]["SPDXRef-angular"]["repository"], "https://github.com/angular/quickstart")
+                quickstart_metrics = metrics["packages"]["SPDXRef-angular"]["metrics"]
                 self.assertEqual(quickstart_metrics["total_commits"], 22)
                 self.assertEqual(quickstart_metrics["total_contributors"], 8)
                 self.assertEqual(quickstart_metrics["pony_factor"], 2)
@@ -135,8 +140,11 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories"]["casual"], 2)
                 self.assertAlmostEqual(quickstart_metrics["average_commits_week"], 0.00861, delta=0.1)
 
-                self.assertIn("https://github.com/angular/angular-seed", metrics["repositories"])
-                angular_metrics = metrics["repositories"]["https://github.com/angular/angular-seed"]["metrics"]
+                self.assertIn("SPDXRef-angular-seed", metrics["packages"])
+                self.assertEqual(
+                    metrics["packages"]["SPDXRef-angular-seed"]["repository"], "https://github.com/angular/angular-seed"
+                )
+                angular_metrics = metrics["packages"]["SPDXRef-angular-seed"]["metrics"]
                 self.assertEqual(angular_metrics["total_commits"], 11)
                 self.assertEqual(angular_metrics["total_contributors"], 4)
                 self.assertEqual(angular_metrics["pony_factor"], 1)
@@ -187,10 +195,11 @@ class TestMetrics(EndToEndTestCase):
             # Check metrics
             with open(self.temp_file.name) as f:
                 metrics = json.load(f)
-                self.assertEqual(len(metrics["repositories"]), 2)
+                self.assertEqual(len(metrics["packages"]), 2)
 
-                self.assertIn("https://github.com/angular/quickstart", metrics["repositories"])
-                quickstart_metrics = metrics["repositories"]["https://github.com/angular/quickstart"]["metrics"]
+                self.assertIn("SPDXRef-angular", metrics["packages"])
+                self.assertEqual(metrics["packages"]["SPDXRef-angular"]["repository"], "https://github.com/angular/quickstart")
+                quickstart_metrics = metrics["packages"]["SPDXRef-angular"]["metrics"]
                 self.assertEqual(quickstart_metrics["total_commits"], 142)
                 self.assertEqual(quickstart_metrics["total_contributors"], 20)
                 self.assertEqual(quickstart_metrics["pony_factor"], 2)
@@ -207,8 +216,11 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories"]["casual"], 8)
                 self.assertAlmostEqual(quickstart_metrics["average_commits_week"], 0.003266620657925006, delta=0.1)
 
-                self.assertIn("https://github.com/angular/angular-seed", metrics["repositories"])
-                angular_metrics = metrics["repositories"]["https://github.com/angular/angular-seed"]["metrics"]
+                self.assertIn("SPDXRef-angular-seed", metrics["packages"])
+                self.assertEqual(
+                    metrics["packages"]["SPDXRef-angular-seed"]["repository"], "https://github.com/angular/angular-seed"
+                )
+                angular_metrics = metrics["packages"]["SPDXRef-angular-seed"]["metrics"]
                 self.assertEqual(angular_metrics["total_commits"], 196)
                 self.assertEqual(angular_metrics["total_contributors"], 56)
                 self.assertEqual(angular_metrics["pony_factor"], 5)
@@ -258,10 +270,12 @@ class TestMetrics(EndToEndTestCase):
             # Check metrics
             with open(self.temp_file.name) as f:
                 metrics = json.load(f)
-                self.assertEqual(len(metrics["repositories"]), 1)
-
-                self.assertIn("https://github.com/angular/quickstart", metrics["repositories"])
-                quickstart_metrics = metrics["repositories"]["https://github.com/angular/quickstart"]["metrics"]
+                self.assertEqual(len(metrics["packages"]), 2)
+                self.assertIn("SPDXRef-angular", metrics["packages"])
+                self.assertIn("SPDXRef-angular-2", metrics["packages"])
+                self.assertEqual(metrics["packages"]["SPDXRef-angular"]["repository"], "https://github.com/angular/quickstart")
+                self.assertEqual(metrics["packages"]["SPDXRef-angular-2"]["repository"], "https://github.com/angular/quickstart")
+                quickstart_metrics = metrics["packages"]["SPDXRef-angular"]["metrics"]
                 self.assertEqual(quickstart_metrics["total_commits"], 164)
                 self.assertEqual(quickstart_metrics["total_contributors"], 25)
                 self.assertEqual(quickstart_metrics["pony_factor"], 2)
@@ -312,9 +326,11 @@ class TestMetrics(EndToEndTestCase):
             # Check metrics
             with open(self.temp_file.name) as f:
                 metrics = json.load(f)
-                self.assertEqual(len(metrics["repositories"]), 1)
-                self.assertIn("https://github.com/angular/quickstart", metrics["repositories"])
-                quickstart_metrics = metrics["repositories"]["https://github.com/angular/quickstart"]["metrics"]
+                self.assertEqual(len(metrics["packages"]), 2)
+
+                self.assertIn("SPDXRef-angular", metrics["packages"])
+                self.assertEqual(metrics["packages"]["SPDXRef-angular"]["repository"], "https://github.com/angular/quickstart")
+                quickstart_metrics = metrics["packages"]["SPDXRef-angular"]["metrics"]
                 self.assertEqual(quickstart_metrics["total_commits"], 164)
                 self.assertEqual(quickstart_metrics["total_contributors"], 25)
                 self.assertEqual(quickstart_metrics["pony_factor"], 2)
@@ -330,6 +346,9 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories"]["regular"], 13)
                 self.assertEqual(quickstart_metrics["developer_categories"]["casual"], 9)
                 self.assertAlmostEqual(quickstart_metrics["average_commits_week"], 0.06418, delta=0.1)
+
+                self.assertIn("SPDXRef-sql-dk", metrics["packages"])
+                self.assertEqual(metrics["packages"]["SPDXRef-sql-dk"]["metrics"], None)
 
 
 if __name__ == "__main__":
