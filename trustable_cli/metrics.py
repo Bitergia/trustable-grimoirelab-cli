@@ -128,24 +128,24 @@ class GitEventsAnalyzer:
 
         total = sum(self.messages_sizes)
         number = len(self.messages_sizes)
-        average = 0
+        mean = 0
         median = 0
         if number > 0:
-            average = total / number
+            mean = total / number
             median = sorted(self.messages_sizes)[number // 2]
 
         metrics = {
             "total": total,
-            "average": average,
+            "mean": mean,
             "median": median,
         }
         return metrics
 
-    def get_average_commits_week(self, days_interval: int):
+    def get_commits_week_mean(self, days_interval: int):
         """
-        Get the average number of commits per week
+        Get the average (mean) number of commits per week
 
-        :param days_interval: Interval of days to calculate the average
+        :param days_interval: Interval of days to calculate the mean
         """
         return self.total_commits / days_interval / 7
 
@@ -192,9 +192,9 @@ class GitEventsAnalyzer:
                 continue
             # File type metrics
             if re.search(FILE_TYPE_CODE, file["file"]):
-                self.file_types["Code"] += 1
+                self.file_types["code"] += 1
             else:
-                self.file_types["Other"] += 1
+                self.file_types["other"] += 1
 
             # Line added/removed metrics
             if "added" in file:
@@ -244,16 +244,24 @@ def get_repository_metrics(
     metrics["metrics"]["total_contributors"] = analyzer.get_contributor_count()
     metrics["metrics"]["pony_factor"] = analyzer.get_pony_factor()
     metrics["metrics"]["elephant_factor"] = analyzer.get_elephant_factor()
-    metrics["metrics"]["file_types"] = analyzer.get_file_type_metrics()
-    metrics["metrics"]["commit_size"] = analyzer.get_commit_size_metrics()
-    metrics["metrics"]["message_size"] = analyzer.get_message_size_metrics()
-    metrics["metrics"]["developer_categories"] = analyzer.get_developer_categories()
 
     if from_date and to_date:
         days = (to_date - from_date).days
     else:
         days = 365
-    metrics["metrics"]["average_commits_week"] = analyzer.get_average_commits_week(days)
+    metrics["metrics"]["commits_week_mean"] = analyzer.get_commits_week_mean(days)
+
+    # Flatten two-level metrics
+    metrics_to_flatten = {
+        "file_types": analyzer.get_file_type_metrics(),
+        "commit_size": analyzer.get_commit_size_metrics(),
+        "message_size": analyzer.get_message_size_metrics(),
+        "developer_categories": analyzer.get_developer_categories(),
+    }
+
+    for prefix, metrics_set in metrics_to_flatten.items():
+        for name, value in metrics_set.items():
+            metrics["metrics"][prefix + "_" + name] = value
 
     return metrics
 
