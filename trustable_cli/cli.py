@@ -141,7 +141,7 @@ def get_sbom_packages(file: str) -> dict[str, str]:
             packages[package.spdx_id] = repository
         else:
             packages[package.spdx_id] = None
-            logging.warning(f"Could not find a git repository for {package.name}")
+            logging.warning(f"Could not find a git repository for {package.spdx_id} ({package.name})")
 
     return packages
 
@@ -205,7 +205,8 @@ def generate_metrics_when_ready(
 
         if pending_repositories:
             logging.info(f"Waiting for {len(pending_repositories)} repositories to be ready")
-            time.sleep(5)
+            logging.debug(f"Repositories not ready: {pending_repositories}")
+            time.sleep(25)
 
     return metrics
 

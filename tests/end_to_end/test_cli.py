@@ -318,7 +318,7 @@ class TestMetrics(EndToEndTestCase):
             self.assertEqual(result.exit_code, 0)
             # Check logs
             self.assertIn("INFO:root:Parsing file ./data/mercurial_repo.spdx.xml", logger.output)
-            self.assertIn("WARNING:root:Could not find a git repository for sql-dk", logger.output)
+            self.assertIn("WARNING:root:Could not find a git repository for SPDXRef-sql-dk (sql-dk)", logger.output)
             self.assertIn("INFO:root:Found 1 git repositories", logger.output)
             self.assertIn("INFO:root:Scheduling tasks", logger.output)
             self.assertIn("INFO:root:Generating metrics", logger.output)
