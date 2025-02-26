@@ -244,7 +244,7 @@ class TestCli(unittest.TestCase):
 
         self.assertEqual(result.exit_code, 0)
         self.assertIn(
-            "Could not find a git repository for bootstrap/gnu-config.bst",
+            "Could not find a git repository for SPDXRef-bootstrap-gnu-config.bst-0 (bootstrap/gnu-config.bst)",
             result.output,
         )
         self.assertEqual(len(http_requests), 4)
@@ -275,7 +275,7 @@ class TestCli(unittest.TestCase):
         )
 
         self.assertEqual(result.exit_code, 0)
-        self.assertIn("Could not find a git repository for bootstrap/ncurses.bst", result.output)
+        self.assertIn("Could not find a git repository for SPDXRef-ncurses-6.40 (bootstrap/ncurses.bst)", result.output)
         self.assertEqual(len(http_requests), 4)
         self.assertEqual(len(http_requests_repos), 4)
 
