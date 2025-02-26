@@ -226,9 +226,12 @@ def repository_ready(grimoirelab_client: GrimoireLabClient, repository: str, aft
 
     repo_data = r.json()
 
-    last_run = repo_data["results"][0]["task"]["last_run"]
-    if last_run:
-        last_run_dt = datetime.datetime.fromisoformat(last_run)
+    task = repo_data["results"][0]["task"]
+    if task["status"] == "failed":
+        logging.warning(f"Metrics for '{repository}' might be incomplete")
+        return True
+    elif task["last_run"]:
+        last_run_dt = datetime.datetime.fromisoformat(task["last_run"])
         return last_run_dt > after_date
 
     return False

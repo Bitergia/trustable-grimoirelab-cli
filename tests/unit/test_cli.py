@@ -64,6 +64,7 @@ def setup_get_repositories_mock_server():
                 {
                     "task": {
                         "last_run": datetime.datetime.now(tz=datetime.timezone.utc).isoformat(),
+                        "status": "completed",
                     }
                 }
             ]
