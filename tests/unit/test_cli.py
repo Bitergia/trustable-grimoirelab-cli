@@ -328,7 +328,7 @@ class TestCli(unittest.TestCase):
 
         self.assertEqual(result.exit_code, 1)
         self.assertIn("Error scheduling task", result.output)
-        self.assertEqual(len(http_requests), 1)
+        self.assertEqual(len(http_requests), 5)
 
 
 class TestGetRepository(unittest.TestCase):
