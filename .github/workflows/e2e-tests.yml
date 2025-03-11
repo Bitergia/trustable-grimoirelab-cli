@@ -1,6 +1,14 @@
 name: End to end tests
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '!**'
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
 

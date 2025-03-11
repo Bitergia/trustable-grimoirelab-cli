@@ -1,6 +1,10 @@
 import logging
+import time
 
 import requests
+
+
+MAX_RETRIES = 5
 
 
 class GrimoireLabClient:
@@ -37,6 +41,15 @@ class GrimoireLabClient:
 
         self.session.headers.update({"Authorization": f"Bearer {self._token}"})
 
+    def _reconnect(self):
+        """Reconnect to the server using a new Session and the current token"""
+
+        logging.debug("Server closed the connection. Reconnecting to the server.")
+
+        self.session = requests.Session()
+        if self._token:
+            self.session.headers.update({"Authorization": f"Bearer {self._token}"})
+
     def get(self, uri: str, *args, **kwargs) -> requests.Response:
         """
         Make a GET request to the GrimoireLab API.
@@ -57,8 +70,8 @@ class GrimoireLabClient:
 
     def _make_request(self, method: str, uri: str, *args, **kwargs) -> requests.Response:
         """
-        Make a request to the GrimoireLab API.
-        Check if the token is still valid, if not, refresh it.
+        Make a request to the GrimoireLab API with retry and exponential backoff.
+        If the session is invalid or the token is expired, it attempts to reconnect and retry.
 
         :param method: HTTP method to use (get or post).
         :param uri: URI to request.
@@ -67,17 +80,27 @@ class GrimoireLabClient:
             raise ValueError("Session not connected. Call connect() first.")
 
         url = f"{self.url}/{uri}"
-        try:
-            response = self.session.request(method, url, *args, **kwargs)
-            response.raise_for_status()
-            return response
-        except requests.HTTPError as e:
-            if e.response.status_code == 403:
-                if not self._refresh_token:
-                    raise
-                self._refresh_auth_token()
-                return self.session.request(method, url, *args, **kwargs)
-            return e.response
+        last_exception = None
+
+        for attempt in range(MAX_RETRIES):
+            try:
+                response = self.session.request(method, url, *args, **kwargs)
+                response.raise_for_status()
+                return response
+            except requests.HTTPError as e:
+                if e.response.status_code == 403 and self._refresh_token:
+                    self._refresh_auth_token()
+                return e.response
+            except (requests.ConnectionError, requests.Timeout) as e:
+                self._reconnect()
+                last_exception = e
+
+            delay = 2**attempt
+            time.sleep(delay)
+
+        # If all retries fail, raise the last encountered exception
+        if last_exception:
+            raise last_exception
 
     def _refresh_auth_token(self):
         """Refresh the access token using the refresh token"""
