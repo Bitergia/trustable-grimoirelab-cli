@@ -40,8 +40,13 @@ if typing.TYPE_CHECKING:
 COMMIT_EVENT_TYPE = "org.grimoirelab.events.git.commit"
 AUTHOR_FIELD = "Author"
 FILE_TYPE_CODE = (
-    r"\.bazel$|\.bazelrc$|\.bzl$|\.c$|\.cc$|\.cp$|\.cpp$|\.cxx$|\.c\+\+$|"
-    r"\.go$|\.h$|\.js$|\.mjs$|\.java$|\.py$|\.rs$|\.sh$|\.tf$|\.ts$"
+    r"\.bazel$|\.bazelrc$|\.bzl$|\.c$|\.cc$|\.cp$|\.cpp$|\.cs$\|\.cxx$|\.c\+\+$|"
+    r"\.go$|\.h$|\.hpp$|\.js$|\.mjs$|\.java$|\.pl$|\.py$|\.rs$|\.sh$|\.tf$|\.ts$"
+)
+FILE_TYPE_BINARY = (
+    r"\.7z$|\.a$|\.abb$|\.apk$|\.app$|\.appx$|\.arc$|\.bin$|\.bz2$|\.class$|\.deb$|"
+    r"\.dll$|\.dmg$|\.exe$|\.gz$|\.ipa$|\.iso$|\.jar$|\.lib$|\.msi$|\.o$|\.obj$|\.rar$|"
+    r"\.rpm$|\.so$|\.tar$|\.xar$|\.xz$|\.zip$|\.zst$|\.Z$"
 )
 
 
@@ -192,6 +197,8 @@ class GitEventsAnalyzer:
             # File type metrics
             if re.search(FILE_TYPE_CODE, file["file"]):
                 self.file_types["code"] += 1
+            elif re.search(FILE_TYPE_BINARY, file["file"]):
+                self.file_types["binary"] += 1
             else:
                 self.file_types["other"] += 1
 

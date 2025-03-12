@@ -122,6 +122,7 @@ class TestGitEventsAnalyzer(unittest.TestCase):
 
         file_metrics = self.analyzer.get_file_type_metrics()
         self.assertEqual(file_metrics.get("code", 0), 54)
+        self.assertEqual(file_metrics.get("binary", 0), 1)
         self.assertEqual(file_metrics.get("other", 0), 24)
 
     def test_commit_size_metrics(self):
