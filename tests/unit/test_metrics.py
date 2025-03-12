@@ -164,12 +164,23 @@ class TestGitEventsAnalyzer(unittest.TestCase):
         self.assertAlmostEqual(metrics["mean"], 210.11, delta=0.1)
         self.assertEqual(metrics["median"], 229)
 
-    def test_get_commits_week_mean(self):
+    def test_get_commits_frequency(self):
         """Test whether the average (mean) commits per week is calculated correctly"""
 
         self.analyzer.process_events(self.events)
-        avg = self.analyzer.get_commits_week_mean(days_interval=30)
-        self.assertAlmostEqual(avg, 9 / 30 / 7, delta=0.1)
+        metrics = self.analyzer.get_commit_frequency_metrics(days_interval=30)
+        self.assertAlmostEqual(metrics["week"], 9 / (30 / 7), delta=0.1)
+        self.assertAlmostEqual(metrics["month"], 9, delta=0.1)
+        self.assertIsNone(metrics["year"])
+
+    def test_get_all_commits_frequency(self):
+        """Test whether the average (mean) commits per week and year is calculated correctly"""
+
+        self.analyzer.process_events(self.events)
+        metrics = self.analyzer.get_commit_frequency_metrics(days_interval=365)
+        self.assertAlmostEqual(metrics["week"], 9 / (365 / 7), delta=0.1)
+        self.assertAlmostEqual(metrics["month"], 9 / (365 / 30), delta=0.1)
+        self.assertAlmostEqual(metrics["year"], 9, delta=0.1)
 
     def test_get_developer_categories(self):
         """Test if the developer categories are calculated correctly"""

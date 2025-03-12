@@ -73,7 +73,8 @@ GIT_REPO_REGEX = r"((git|http(s)?)|(git@[\w\.]+))://?([\w\.@\:/\-~]+)(\.git)(/)?
 @click.option(
     "--to-date",
     type=click.DateTime(formats=["%Y-%m-%d"]),
-    help="End date",
+    help="End date, by default today",
+    default=datetime.datetime.today().strftime("%Y-%m-%d"),
 )
 @click.option("--verify-certs", is_flag=True, default=False, help="Verify SSL/TLS certificates")
 @click.option("--verbose", is_flag=True, default=False, help="Increase output verbosity")

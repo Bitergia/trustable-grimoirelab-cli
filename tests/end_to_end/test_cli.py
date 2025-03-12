@@ -50,6 +50,7 @@ class TestMetrics(EndToEndTestCase):
                     "--output",
                     self.temp_file.name,
                     "--from-date=2000-01-01",
+                    "--to-date=2025-01-01",
                 ],
             )
             self.assertEqual(result.exit_code, 0)
@@ -82,7 +83,10 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories_core"], 3)
                 self.assertEqual(quickstart_metrics["developer_categories_regular"], 13)
                 self.assertEqual(quickstart_metrics["developer_categories_casual"], 9)
-                self.assertAlmostEqual(quickstart_metrics["commits_week_mean"], 0.06418, delta=0.1)
+                # From 2000 to 2025 there are 9132 days
+                self.assertAlmostEqual(quickstart_metrics["commits_per_week"], 164 / (9132 / 7), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_month"], 164 / (9132 / 30), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_year"], 164 / (9132 / 365), delta=0.1)
 
                 self.assertIn("SPDXRef-angular-seed", metrics["packages"])
                 self.assertEqual(
@@ -104,7 +108,10 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(angular_metrics["developer_categories_core"], 16)
                 self.assertEqual(angular_metrics["developer_categories_regular"], 31)
                 self.assertEqual(angular_metrics["developer_categories_casual"], 11)
-                self.assertAlmostEqual(angular_metrics["commits_week_mean"], 0.08101, delta=0.1)
+                # From 2000 to 2025 there are 9132 days
+                self.assertAlmostEqual(angular_metrics["commits_per_week"], 207 / (9132 / 7), delta=0.1)
+                self.assertAlmostEqual(angular_metrics["commits_per_month"], 207 / (9132 / 30), delta=0.1)
+                self.assertAlmostEqual(angular_metrics["commits_per_year"], 207 / (9132 / 365), delta=0.1)
 
     def test_from_date(self):
         """Check if it returns the number of commits of one repository from a particular date"""
@@ -127,6 +134,7 @@ class TestMetrics(EndToEndTestCase):
                     "--output",
                     self.temp_file.name,
                     "--from-date=2017-01-01",
+                    "--to-date=2025-01-01",
                 ],
             )
             self.assertEqual(result.exit_code, 0)
@@ -159,7 +167,10 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories_core"], 3)
                 self.assertEqual(quickstart_metrics["developer_categories_regular"], 3)
                 self.assertEqual(quickstart_metrics["developer_categories_casual"], 2)
-                self.assertAlmostEqual(quickstart_metrics["commits_week_mean"], 0.00861, delta=0.1)
+                # From 2017 to 2025 there are 2922 days
+                self.assertAlmostEqual(quickstart_metrics["commits_per_week"], 22 / (2922 / 7), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_month"], 22 / (2922 / 30), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_year"], 22 / (2922 / 365), delta=0.1)
 
                 self.assertIn("SPDXRef-angular-seed", metrics["packages"])
                 self.assertEqual(
@@ -181,7 +192,10 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(angular_metrics["developer_categories_core"], 1)
                 self.assertEqual(angular_metrics["developer_categories_regular"], 2)
                 self.assertEqual(angular_metrics["developer_categories_casual"], 1)
-                self.assertAlmostEqual(angular_metrics["commits_week_mean"], 0.0043, delta=0.1)
+                # From 2017 to 2025 there are 2922 days
+                self.assertAlmostEqual(angular_metrics["commits_per_week"], 11 / (2922 / 7), delta=0.1)
+                self.assertAlmostEqual(angular_metrics["commits_per_month"], 11 / (2922 / 30), delta=0.1)
+                self.assertAlmostEqual(angular_metrics["commits_per_year"], 11 / (2922 / 365), delta=0.1)
 
     def test_to_date(self):
         """Check if it returns the number of commits of one repository up to a particular date"""
@@ -237,7 +251,10 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories_core"], 3)
                 self.assertEqual(quickstart_metrics["developer_categories_regular"], 9)
                 self.assertEqual(quickstart_metrics["developer_categories_casual"], 8)
-                self.assertAlmostEqual(quickstart_metrics["commits_week_mean"], 0.003266620657925006, delta=0.1)
+                # From 2000 to 2017 there are 6210 days
+                self.assertAlmostEqual(quickstart_metrics["commits_per_week"], 142 / (6210 / 7), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_month"], 142 / (6210 / 30), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_year"], 142 / (6210 / 365), delta=0.1)
 
                 self.assertIn("SPDXRef-angular-seed", metrics["packages"])
                 self.assertEqual(
@@ -259,7 +276,10 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(angular_metrics["developer_categories_core"], 16)
                 self.assertEqual(angular_metrics["developer_categories_regular"], 30)
                 self.assertEqual(angular_metrics["developer_categories_casual"], 10)
-                self.assertAlmostEqual(angular_metrics["commits_week_mean"], 0.0045088566827697265, delta=0.1)
+                # From 2000 to 2017 there are 6210 days
+                self.assertAlmostEqual(angular_metrics["commits_per_week"], 196 / (6210 / 7), delta=0.1)
+                self.assertAlmostEqual(angular_metrics["commits_per_month"], 196 / (6210 / 30), delta=0.1)
+                self.assertAlmostEqual(angular_metrics["commits_per_year"], 196 / (6210 / 365), delta=0.1)
 
     def test_duplicate_repo(self):
         """Check if it ignores duplicated URLs"""
@@ -282,6 +302,7 @@ class TestMetrics(EndToEndTestCase):
                     "--output",
                     self.temp_file.name,
                     "--from-date=2000-01-01",
+                    "--to-date=2025-01-01",
                 ],
             )
             self.assertEqual(result.exit_code, 0)
@@ -315,7 +336,10 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories_core"], 3)
                 self.assertEqual(quickstart_metrics["developer_categories_regular"], 13)
                 self.assertEqual(quickstart_metrics["developer_categories_casual"], 9)
-                self.assertAlmostEqual(quickstart_metrics["commits_week_mean"], 0.06418, delta=0.1)
+                # From 2000 to 2025 there are 9132 days
+                self.assertAlmostEqual(quickstart_metrics["commits_per_week"], 164 / (9132 / 7), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_month"], 164 / (9132 / 30), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_year"], 164 / (9132 / 365), delta=0.1)
 
     def test_non_git_repo(self):
         """Check if it flags non-git dependencies"""
@@ -338,6 +362,7 @@ class TestMetrics(EndToEndTestCase):
                     "--output",
                     self.temp_file.name,
                     "--from-date=2000-01-01",
+                    "--to-date=2025-01-01",
                 ],
             )
             self.assertEqual(result.exit_code, 0)
@@ -371,7 +396,10 @@ class TestMetrics(EndToEndTestCase):
                 self.assertEqual(quickstart_metrics["developer_categories_core"], 3)
                 self.assertEqual(quickstart_metrics["developer_categories_regular"], 13)
                 self.assertEqual(quickstart_metrics["developer_categories_casual"], 9)
-                self.assertAlmostEqual(quickstart_metrics["commits_week_mean"], 0.06418, delta=0.1)
+                # From 2000 to 2025 there are 9132 days
+                self.assertAlmostEqual(quickstart_metrics["commits_per_week"], 164 / (9132 / 7), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_month"], 164 / (9132 / 30), delta=0.1)
+                self.assertAlmostEqual(quickstart_metrics["commits_per_year"], 164 / (9132 / 365), delta=0.1)
 
                 self.assertIn("SPDXRef-sql-dk", metrics["packages"])
                 self.assertEqual(metrics["packages"]["SPDXRef-sql-dk"]["metrics"], None)
