@@ -54,8 +54,10 @@ trustable spdx.xml \
   --grimoirelab-user user --grimoirelab-password password \
   --opensearch-url https://admin:admin@127.0.0.1:9200 \
   --opensearch-index events \
-  --output metrics.json \
   --repository-timeout 3600
+  --code-file-pattern "\.py$|\.js$" \
+  --binary-file-pattern "\.exe$|\.tar$" \
+  --output metrics.json
 ```
 
 The parameters needed to run the tool are:
