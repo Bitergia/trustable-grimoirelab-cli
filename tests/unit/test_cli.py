@@ -96,6 +96,34 @@ def setup_get_repositories_mock_server():
     return http_requests
 
 
+def setup_get_never_ending_repositories_mock_server():
+    """Setup a mock HTTP server for repository API calls"""
+
+    http_requests = []
+
+    def request_callback(request, uri, headers):
+        last_request = httpretty.last_request()
+        http_requests.append(last_request)
+        last_run = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=365)
+        data = {
+            "results": [
+                {
+                    "task": {
+                        "last_run": last_run.isoformat(),
+                        "status": "running",
+                    }
+                }
+            ]
+        }
+        body = json.dumps(data)
+
+        return 200, headers, body
+
+    httpretty.register_uri(httpretty.GET, REPOSITORIES_URL, responses=[httpretty.Response(body=request_callback)])
+
+    return http_requests
+
+
 class TestCli(unittest.TestCase):
     def setUp(self):
         logging.getLogger().handlers = []
@@ -347,6 +375,42 @@ class TestCli(unittest.TestCase):
         self.assertEqual(result.exit_code, 1)
         self.assertIn("Error scheduling task", result.output)
         self.assertEqual(len(http_requests), 5)
+
+    @httpretty.activate
+    @patch("trustable_cli.cli.get_repository_metrics")
+    def test_never_ending_repository(self, mock_get_repository_metrics):
+        """Check if it returns a warning when a repository task never ends"""
+
+        http_requests = setup_add_repository_mock_server()
+        http_requests_repos = setup_get_never_ending_repositories_mock_server()
+        mock_get_repository_metrics.return_value = {"metrics": {"num_commits": 10}}
+
+        runner = CliRunner()
+
+        result = runner.invoke(
+            trustable_grimoirelab_score,
+            [
+                "./data/valid.spdx.xml",
+                "--grimoirelab-url",
+                GRIMOIRELAB_URL,
+                "--opensearch-url",
+                OPENSEARCH_URL,
+                "--opensearch-index",
+                OPENSEARCH_INDEX,
+                "--output",
+                self.temp_file.name,
+                "--repository-timeout",
+                15,
+            ],
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn(
+            "Timeout waiting for repository https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux to be ready",
+            result.output,
+        )
+        self.assertEqual(len(http_requests), 5)
+        self.assertEqual(len(http_requests_repos), 10)
 
 
 class TestGetRepository(unittest.TestCase):

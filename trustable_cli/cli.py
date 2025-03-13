@@ -59,6 +59,12 @@ GIT_REPO_REGEX = r"((git|http(s)?)|(git@[\w\.]+))://?([\w\.@\:/\-~]+)(\.git)(/)?
 @click.option("--opensearch-index", help="OpenSearch index", default="events")
 @click.option("--output", help="File where the scores will be written", type=click.File("w"), default=sys.stdout)
 @click.option(
+    "--repository-timeout",
+    type=int,
+    help="Timeout in seconds to wait for a repository to be analyzed",
+    default=3600,
+)
+@click.option(
     "--from-date",
     type=click.DateTime(formats=["%Y-%m-%d"]),
     help="Start date, by default last year",
@@ -79,6 +85,7 @@ def trustable_grimoirelab_score(
     opensearch_url: str,
     opensearch_index: str,
     output: str,
+    repository_timeout: int,
     from_date: datetime.datetime | None = None,
     to_date: datetime.datetime | None = None,
     verify_certs: bool = False,
@@ -116,7 +123,14 @@ def trustable_grimoirelab_score(
         schedule_repositories(git_urls, grimoirelab_client)
 
         metrics = generate_metrics_when_ready(
-            grimoirelab_client, git_urls, opensearch_url, opensearch_index, from_date, to_date, verify_certs
+            grimoirelab_client=grimoirelab_client,
+            repositories=git_urls,
+            opensearch_url=opensearch_url,
+            opensearch_index=opensearch_index,
+            from_date=from_date,
+            to_date=to_date,
+            verify_certs=verify_certs,
+            timeout=repository_timeout,
         )
 
         package_metrics = {"packages": {}}
@@ -188,6 +202,7 @@ def generate_metrics_when_ready(
     from_date: datetime.datetime | None = None,
     to_date: datetime.datetime | None = None,
     verify_certs: bool = False,
+    timeout: int = 3600,
 ) -> dict[str:Any]:
     """Generate metrics once the repositories have finished the collection.
 
@@ -198,8 +213,11 @@ def generate_metrics_when_ready(
     :param from_date: Start date for metrics.
     :param to_date: End date for metrics.
     :param verify_certs: Verify SSL/TLS certificates.
+    :param timeout: Seconds to wait before failing getting metrics
     """
     logging.info("Generating metrics")
+
+    limit_time = time.time() + timeout
 
     after_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=7)
     pending_repositories = set(repositories)
@@ -221,10 +239,15 @@ def generate_metrics_when_ready(
 
         pending_repositories -= processed
 
-        if pending_repositories:
+        if pending_repositories and time.time() < limit_time:
             logging.info(f"Waiting for {len(pending_repositories)} repositories to be ready")
             logging.debug(f"Repositories not ready: {pending_repositories}")
             time.sleep(25)
+        else:
+            break
+
+    for repository in pending_repositories:
+        logging.warning(f"Timeout waiting for repository {repository} to be ready")
 
     return metrics
 
