@@ -116,13 +116,32 @@ class TestGitEventsAnalyzer(unittest.TestCase):
     def test_file_type_metrics(self):
         """Test that file type metrics are calculated correctly"""
 
-        self.assertEqual(self.analyzer.get_file_type_metrics(), {})
-
         self.analyzer.process_events(self.events)
 
         file_metrics = self.analyzer.get_file_type_metrics()
-        self.assertEqual(file_metrics.get("code", 0), 54)
-        self.assertEqual(file_metrics.get("other", 0), 24)
+        self.assertEqual(file_metrics["code"], 54)
+        self.assertEqual(file_metrics["binary"], 1)
+        self.assertEqual(file_metrics["other"], 24)
+
+    def test_file_type_metrics_empty(self):
+        """Test that file type metrics are calculated correctly without events"""
+
+        file_metrics = self.analyzer.get_file_type_metrics()
+        self.assertEqual(file_metrics["code"], 0)
+        self.assertEqual(file_metrics["binary"], 0)
+        self.assertEqual(file_metrics["other"], 0)
+
+    def test_file_type_metrics_new_regex(self):
+        """Test that file type metrics are calculated correctly with new regex"""
+
+        analyzer = GitEventsAnalyzer(code_file_pattern=r"\.py$", binary_file_pattern=r"\.md$")
+
+        analyzer.process_events(self.events)
+
+        file_metrics = analyzer.get_file_type_metrics()
+        self.assertEqual(file_metrics["code"], 53)
+        self.assertEqual(file_metrics["binary"], 4)
+        self.assertEqual(file_metrics["other"], 22)
 
     def test_commit_size_metrics(self):
         """Test that commit size metrics are calculated correctly"""

@@ -678,6 +678,20 @@
         {
           "modes": [
             "000000",
+            "100644"
+          ],
+          "indexes": [
+            "0000000",
+            "06ee9fa"
+          ],
+          "action": "A",
+          "file": "sample.tar.gz",
+          "added": "0",
+          "removed": "0"
+        },
+        {
+          "modes": [
+            "000000",
             "100755"
           ],
           "indexes": [

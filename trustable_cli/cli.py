@@ -77,6 +77,8 @@ GIT_REPO_REGEX = r"((git|http(s)?)|(git@[\w\.]+))://?([\w\.@\:/\-~]+)(\.git)(/)?
 )
 @click.option("--verify-certs", is_flag=True, default=False, help="Verify SSL/TLS certificates")
 @click.option("--verbose", is_flag=True, default=False, help="Increase output verbosity")
+@click.option("--code-file-pattern", help="Regular expression to match code file types")
+@click.option("--binary-file-pattern", help="Regular expression to match binary file types")
 def trustable_grimoirelab_score(
     filename: str,
     grimoirelab_url: str,
@@ -90,6 +92,8 @@ def trustable_grimoirelab_score(
     to_date: datetime.datetime | None = None,
     verify_certs: bool = False,
     verbose: bool = False,
+    code_file_pattern: str | None = None,
+    binary_file_pattern: str | None = None,
 ) -> None:
     """Calculate metrics for Trustable using GrimoireLab.
 
@@ -131,6 +135,8 @@ def trustable_grimoirelab_score(
             to_date=to_date,
             verify_certs=verify_certs,
             timeout=repository_timeout,
+            code_file_pattern=code_file_pattern,
+            binary_file_pattern=binary_file_pattern,
         )
 
         package_metrics = {"packages": {}}
@@ -203,6 +209,8 @@ def generate_metrics_when_ready(
     to_date: datetime.datetime | None = None,
     verify_certs: bool = False,
     timeout: int = 3600,
+    code_file_pattern: str | None = None,
+    binary_file_pattern: str | None = None,
 ) -> dict[str:Any]:
     """Generate metrics once the repositories have finished the collection.
 
@@ -214,6 +222,8 @@ def generate_metrics_when_ready(
     :param to_date: End date for metrics.
     :param verify_certs: Verify SSL/TLS certificates.
     :param timeout: Seconds to wait before failing getting metrics
+    :param code_file_pattern: Regular expression to match code file types.
+    :param binary_file_pattern: Regular expression to match binary file types.
     """
     logging.info("Generating metrics")
 
@@ -228,12 +238,14 @@ def generate_metrics_when_ready(
         for repository in pending_repositories:
             if repository_ready(grimoirelab_client, repository, after_date):
                 metrics["repositories"][repository] = get_repository_metrics(
-                    repository,
-                    opensearch_url,
-                    opensearch_index,
-                    from_date,
-                    to_date,
-                    verify_certs,
+                    repository=repository,
+                    opensearch_url=opensearch_url,
+                    opensearch_index=opensearch_index,
+                    from_date=from_date,
+                    to_date=to_date,
+                    verify_certs=verify_certs,
+                    code_file_pattern=code_file_pattern,
+                    binary_file_pattern=binary_file_pattern,
                 )
                 processed.add(repository)
 

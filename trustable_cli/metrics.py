@@ -40,20 +40,27 @@ if typing.TYPE_CHECKING:
 COMMIT_EVENT_TYPE = "org.grimoirelab.events.git.commit"
 AUTHOR_FIELD = "Author"
 FILE_TYPE_CODE = (
-    r"\.bazel$|\.bazelrc$|\.bzl$|\.c$|\.cc$|\.cp$|\.cpp$|\.cxx$|\.c\+\+$|"
-    r"\.go$|\.h$|\.js$|\.mjs$|\.java$|\.py$|\.rs$|\.sh$|\.tf$|\.ts$"
+    r"\.bazel$|\.bazelrc$|\.bzl$|\.c$|\.cc$|\.cp$|\.cpp$|\.cs$\|\.cxx$|\.c\+\+$|"
+    r"\.go$|\.h$|\.hpp$|\.js$|\.mjs$|\.java$|\.pl$|\.py$|\.rs$|\.sh$|\.tf$|\.ts$"
+)
+FILE_TYPE_BINARY = (
+    r"\.7z$|\.a$|\.abb$|\.apk$|\.app$|\.appx$|\.arc$|\.bin$|\.bz2$|\.class$|\.deb$|"
+    r"\.dll$|\.dmg$|\.exe$|\.gz$|\.ipa$|\.iso$|\.jar$|\.lib$|\.msi$|\.o$|\.obj$|\.rar$|"
+    r"\.rpm$|\.so$|\.tar$|\.xar$|\.xz$|\.zip$|\.zst$|\.Z$"
 )
 
 
 class GitEventsAnalyzer:
-    def __init__(self):
+    def __init__(self, code_file_pattern: str | None = None, binary_file_pattern: str | None = None):
         self.total_commits: int = 0
         self.contributors: Counter = Counter()
         self.companies: Counter = Counter()
-        self.file_types: dict = Counter()
+        self.file_types: dict = {"code": 0, "binary": 0, "other": 0}
         self.added_lines: int = 0
         self.removed_lines: int = 0
         self.messages_sizes: list = []
+        self.re_code_pattern = re.compile(code_file_pattern or FILE_TYPE_CODE)
+        self.re_binary_pattern = re.compile(binary_file_pattern or FILE_TYPE_BINARY)
 
     def process_events(self, events: iter(dict[str, Any])):
         for event in events:
@@ -111,7 +118,7 @@ class GitEventsAnalyzer:
     def get_file_type_metrics(self):
         """Get the file type metrics"""
 
-        return dict(self.file_types)
+        return self.file_types
 
     def get_commit_size_metrics(self):
         """Get the commit size metrics"""
@@ -190,8 +197,10 @@ class GitEventsAnalyzer:
             if not file["file"]:
                 continue
             # File type metrics
-            if re.search(FILE_TYPE_CODE, file["file"]):
+            if self.re_code_pattern.search(file["file"]):
                 self.file_types["code"] += 1
+            elif self.re_binary_pattern.search(file["file"]):
+                self.file_types["binary"] += 1
             else:
                 self.file_types["other"] += 1
 
@@ -219,6 +228,8 @@ def get_repository_metrics(
     from_date: datetime.datetime = None,
     to_date: datetime.datetime = None,
     verify_certs: bool = True,
+    code_file_pattern: str | None = None,
+    binary_file_pattern: str | None = None,
 ):
     """
     Get the metrics from a repository.
@@ -229,6 +240,8 @@ def get_repository_metrics(
     :param verify_certs: Boolean, verify SSL/TLS certificates, default True
     :param from_date: Start date, by default None
     :param to_date: End date, by default None
+    :param code_file_pattern: Regular expression to match code file types.
+    :param binary_file_pattern: Regular expression to match binary file types.
     """
     os_conn = connect_to_opensearch(opensearch_url, verify_certs=verify_certs)
 
@@ -236,7 +249,7 @@ def get_repository_metrics(
 
     events = get_repository_events(os_conn, opensearch_index, repository, from_date, to_date)
 
-    analyzer = GitEventsAnalyzer()
+    analyzer = GitEventsAnalyzer(code_file_pattern=code_file_pattern, binary_file_pattern=binary_file_pattern)
     analyzer.process_events(events)
 
     metrics["metrics"]["total_commits"] = analyzer.get_commit_count()
