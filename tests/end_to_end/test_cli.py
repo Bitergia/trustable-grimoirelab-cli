@@ -20,21 +20,21 @@ import json
 import logging
 import unittest
 
-from trustable_cli.cli import trustable_grimoirelab_score
+from grimoirelab_metrics.cli import grimoirelab_metrics
 from end_to_end.base import EndToEndTestCase
 
 GRIMOIRELAB_URL = "http://localhost:8000"
 
 
 class TestMetrics(EndToEndTestCase):
-    """End to end tests for Trustable CLI metrics"""
+    """End to end tests for grimoirelab metrics CLI"""
 
     def test_metrics(self):
         """Check whether the metrics are correctly calculated"""
 
         with self.assertLogs(logging.getLogger()) as logger:
             result = self.runner.invoke(
-                trustable_grimoirelab_score,
+                grimoirelab_metrics,
                 [
                     "./data/archived_repos.spdx.xml",
                     "--grimoirelab-url",
@@ -111,7 +111,7 @@ class TestMetrics(EndToEndTestCase):
 
         with self.assertLogs(logging.getLogger()) as logger:
             result = self.runner.invoke(
-                trustable_grimoirelab_score,
+                grimoirelab_metrics,
                 [
                     "./data/archived_repos.spdx.xml",
                     "--grimoirelab-url",
@@ -188,7 +188,7 @@ class TestMetrics(EndToEndTestCase):
 
         with self.assertLogs(logging.getLogger()) as logger:
             result = self.runner.invoke(
-                trustable_grimoirelab_score,
+                grimoirelab_metrics,
                 [
                     "./data/archived_repos.spdx.xml",
                     "--grimoirelab-url",
@@ -266,7 +266,7 @@ class TestMetrics(EndToEndTestCase):
 
         with self.assertLogs(logging.getLogger()) as logger:
             result = self.runner.invoke(
-                trustable_grimoirelab_score,
+                grimoirelab_metrics,
                 [
                     "./data/duplicate_repo.spdx.xml",
                     "--grimoirelab-url",
@@ -322,7 +322,7 @@ class TestMetrics(EndToEndTestCase):
 
         with self.assertLogs(logging.getLogger()) as logger:
             result = self.runner.invoke(
-                trustable_grimoirelab_score,
+                grimoirelab_metrics,
                 [
                     "./data/mercurial_repo.spdx.xml",
                     "--grimoirelab-url",
