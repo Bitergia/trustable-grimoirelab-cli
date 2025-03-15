@@ -147,13 +147,25 @@ class GitEventsAnalyzer:
         }
         return metrics
 
-    def get_commits_week_mean(self, days_interval: int):
+    def get_commit_frequency_metrics(self, days_interval: int):
         """
-        Get the average (mean) number of commits per week
+        Get the average (mean) number of commits per week, month and
+        year if the days of interval is greater than the metrics interval.
 
         :param days_interval: Interval of days to calculate the mean
         """
-        return self.total_commits / days_interval / 7
+        metrics = {"week": None, "month": None, "year": None}
+
+        if days_interval >= 7:
+            metrics["week"] = self.total_commits / (days_interval / 7)
+
+        if days_interval >= 30:
+            metrics["month"] = self.total_commits / (days_interval / 30)
+
+        if days_interval >= 365:
+            metrics["year"] = self.total_commits / (days_interval / 365)
+
+        return metrics
 
     def get_developer_categories(self):
         """Return the number of core, regular and casual developers"""
@@ -261,7 +273,6 @@ def get_repository_metrics(
         days = (to_date - from_date).days
     else:
         days = 365
-    metrics["metrics"]["commits_week_mean"] = analyzer.get_commits_week_mean(days)
 
     # Flatten two-level metrics
     metrics_to_flatten = {
@@ -269,6 +280,7 @@ def get_repository_metrics(
         "commit_size": analyzer.get_commit_size_metrics(),
         "message_size": analyzer.get_message_size_metrics(),
         "developer_categories": analyzer.get_developer_categories(),
+        "commits_per": analyzer.get_commit_frequency_metrics(days),
     }
 
     for prefix, metrics_set in metrics_to_flatten.items():
